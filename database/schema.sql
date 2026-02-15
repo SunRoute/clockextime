@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS time_records (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     date_recorded DATE NOT NULL,
-    clock_in DATETIME,
+    clock_in DATETIME NOT NULL,
     clock_out DATETIME,
     worked_hours DECIMAL(5,2),
     possible_overtime BOOLEAN DEFAULT FALSE,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS notifications (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     notification_message TEXT NOT NULL,
-    read_notification BOOLEAN DEFAULT FALSE,
+    is_read BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES users(id)
