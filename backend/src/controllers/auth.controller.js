@@ -1,5 +1,12 @@
 import pool from "../config/db.js";
 import jwt from "jsonwebtoken";
+
+export const perfil = (req, res) => {
+  res.json({
+    message: "Acceso autorizado",
+    user: req.user,
+  });
+};
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
