@@ -1,7 +1,7 @@
 import pool from "../config/db.js";
 import jwt from "jsonwebtoken";
 
-export const perfil = (req, res) => {
+export const profile = (req, res) => {
   res.json({
     message: "Acceso autorizado",
     user: req.user,
