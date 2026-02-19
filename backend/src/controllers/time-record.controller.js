@@ -5,12 +5,12 @@ export const clockIn = async (req, res) => {
     const userId = req.user.id; // Uso de JWT
 
     // Verificar si existe fichaje abierto
-    const [openTimeRecords] = await pool.query(
+    const [openTimeRecord] = await pool.query(
       "SELECT * FROM time_records WHERE user_id = ? AND clock_out IS NULL",
       [userId],
     );
 
-    if (openTimeRecords.length > 0) {
+    if (openTimeRecord.length > 0) {
       return res.status(400).json({
         message: "Ya tiene un fichaje abierto.",
       });
@@ -66,6 +66,18 @@ export const clockOut = async (req, res) => {
       "UPDATE time_records SET clock_out = NOW(), worked_hours = ?, possible_overtime = ? WHERE id = ?",
       [roundedHours, possibleOvertime, timeRecord.id],
     );
+
+    // Registrar horas extras si las hay
+    if (possibleOvertime) {
+      const overtimeHours = Number(
+        (roundedHours - timeRecord.daily_working_hours).toFixed(2),
+      );
+
+      await pool.query(
+        "INSERT INTO overtimes (time_record_id, overtime_hours) VALUES (?, ?)",
+        [timeRecord.id, overtimeHours],
+      );
+    }
 
     res.json({
       message: "Salida registrada",
