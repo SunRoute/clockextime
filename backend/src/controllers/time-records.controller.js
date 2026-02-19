@@ -2,7 +2,7 @@ import pool from "../config/db.js";
 
 export const clockIn = async (req, res) => {
   try {
-    const userId = 1; //req.user.id; // vendrá del middleware auth
+    const userId = req.user.id; // Uso de JWT
 
     // Verificar si existe fichaje abierto
     const [openTimeRecords] = await pool.query(
@@ -31,11 +31,21 @@ export const clockIn = async (req, res) => {
 
 export const clockOut = async (req, res) => {
   try {
-    const userId = 1; // temporal
+    const userId = req.user.id; // Uso de JWT
 
-    // Buscar fichaje abierto
+    // Buscar fichaje abierto y calcular segundos trabajados en SQL
     const [rows] = await pool.query(
-      "SELECT * FROM time_records WHERE user_id = ? AND clock_out IS NULL LIMIT 1",
+      `
+      SELECT
+        time_records.id,
+        time_records.clock_in,
+        TIMESTAMPDIFF(SECOND, time_records.clock_in, NOW()) AS seconds_worked, users.daily_working_hours
+      FROM time_records
+      JOIN users ON time_records.user_id = users.id
+      WHERE time_records.user_id = ?
+        AND time_records.clock_out IS NULL
+      LIMIT 1
+      `,
       [userId],
     );
 
@@ -44,25 +54,14 @@ export const clockOut = async (req, res) => {
     }
 
     const timeRecord = rows[0];
+    // Convertir segundos a horas
+    const hoursWorked = timeRecord.seconds_worked / 3600;
+    const roundedHours = Number(hoursWorked.toFixed(2));
 
-    const timeClockIn = new Date(timeRecord.clock_in);
-    const timeClockOut = new Date();
+    // Comparar con jornada real del usuario
+    const possibleOvertime = roundedHours > timeRecord.daily_working_hours;
 
-    const diffMs = timeClockOut - timeClockIn;
-    const hours = diffMs / (1000 * 60 * 60);
-
-    const roundedHours = Number(hours.toFixed(2));
-
-    // Obtener jornada real del usuario
-    const [userRows] = await pool.query(
-      "SELECT daily_working_hours FROM users WHERE id = ?",
-      [userId],
-    );
-
-    const dailyWorkingHours = userRows[0].daily_working_hours;
-
-    const possibleOvertime = roundedHours > dailyWorkingHours;
-
+    // Cerrar fichaje
     await pool.query(
       "UPDATE time_records SET clock_out = NOW(), worked_hours = ?, possible_overtime = ? WHERE id = ?",
       [roundedHours, possibleOvertime, timeRecord.id],
