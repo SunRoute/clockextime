@@ -89,3 +89,30 @@ export const clockOut = async (req, res) => {
     res.status(500).json({ message: "Error al registrar salida." });
   }
 };
+
+export const getMyTimeRecords = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const [rows] = await pool.query(
+      `
+      SELECT 
+        id,
+        date_recorded,
+        clock_in,
+        clock_out,
+        worked_hours,
+        possible_overtime
+      FROM time_records
+      WHERE user_id = ?
+      ORDER BY date_recorded DESC
+      `,
+      [userId],
+    );
+
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener fichajes." });
+  }
+};
