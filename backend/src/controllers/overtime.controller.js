@@ -44,6 +44,35 @@ export const updateOvertimeStatus = async (req, res) => {
   }
 };
 
+// Empleado obtiene sus horas extra
+export const getMyOvertimes = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const [rows] = await pool.query(
+      `
+      SELECT 
+        overtimes.id,
+        overtimes.overtime_hours,
+        overtimes.reason,
+        overtimes.overtime_status,
+        overtimes.created_at,
+        time_records.date_recorded
+      FROM overtimes
+      JOIN time_records ON overtimes.time_record_id = time_records.id
+      WHERE time_records.user_id = ?
+      ORDER BY time_records.date_recorded DESC
+      `,
+      [userId],
+    );
+
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener horas extra." });
+  }
+};
+
 // Empleado añade motivo a horas extra pendientes
 export const addOvertimeReason = async (req, res) => {
   try {
