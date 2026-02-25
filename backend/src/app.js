@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import timeRecordRoutes from "./routes/time-record.routes.js";
 import overtimeRoutes from "./routes/overtime.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 dotenv.config();
 
@@ -17,5 +18,6 @@ app.use("/api", testRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/time-record", timeRecordRoutes);
 app.use("/api/overtime", overtimeRoutes);
+app.use("/api/user", userRoutes);
 
 export default app;
