@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyToken } from "../middlewares/auth.middlewares.js";
+import { verifyToken } from "../middlewares/auth.middleware.js";
 import {
   clockIn,
   clockOut,
