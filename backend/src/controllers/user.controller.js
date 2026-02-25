@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import bcrypt from "bcrypt";
 
 // Obtener todos los usuarios (solo para admin)
 export const getAllUsers = async (req, res) => {
@@ -31,13 +32,15 @@ export const createUser = async (req, res) => {
     const { employee_number, employee_name, email, password, role_id } =
       req.body;
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     await pool.query(
       `
       INSERT INTO users 
       (employee_number, employee_name, email, password, role_id)
       VALUES (?, ?, ?, ?, ?)
       `,
-      [employee_number, employee_name, email, password, role_id],
+      [employee_number, employee_name, email, hashedPassword, role_id],
     );
 
     res.status(201).json({ message: "Usuario creado correctamente." });

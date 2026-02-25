@@ -1,5 +1,6 @@
 import pool from "../config/db.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const profile = (req, res) => {
   res.json({
@@ -7,9 +8,11 @@ export const profile = (req, res) => {
     user: req.user,
   });
 };
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     // Buscar usuario
     const [rows] = await pool.query(
       "SELECT users.*, roles.role_name FROM users JOIN roles ON users.role_id = roles.id WHERE email = ? AND active = TRUE",
@@ -19,8 +22,11 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Credenciales incorrectas" });
     }
     const user = rows[0];
-    // Comparar contraseña (sin hash por ahora)
-    if (password !== user.password) {
+
+    // Comparar contraseña hasheada
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) {
       return res.status(400).json({ message: "Credenciales incorrectas" });
     }
     // Crear token
