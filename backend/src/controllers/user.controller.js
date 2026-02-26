@@ -64,6 +64,7 @@ export const deactivateUser = async (req, res) => {
   }
 };
 
+// Cambiar contraseña (para cualquier usuario)
 export const changePassword = async (req, res) => {
   try {
     const userId = req.user.id;
