@@ -63,3 +63,47 @@ export const deactivateUser = async (req, res) => {
     res.status(500).json({ message: "Error al desactivar usuario." });
   }
 };
+
+export const changePassword = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    // Buscar usuario
+    const [rows] = await pool.query("SELECT password FROM users WHERE id = ?", [
+      userId,
+    ]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const user = rows[0];
+
+    // Verificar contraseña actual
+    const validPassword = await bcrypt.compare(currentPassword, user.password);
+
+    if (!validPassword) {
+      return res.status(400).json({
+        message: "Contraseña actual incorrecta",
+      });
+    }
+
+    // Hashear nueva contraseña
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await pool.query(
+      `
+      UPDATE users 
+      SET password = ?
+      WHERE id = ?
+      `,
+      [hashedPassword, userId],
+    );
+
+    res.json({ message: "Contraseña actualizada correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al cambiar contraseña" });
+  }
+};
