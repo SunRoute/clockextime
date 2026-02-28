@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { firstChangePasswordRequest } from "../api/auth";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
@@ -24,18 +25,7 @@ const ChangePassword = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/first-change-password`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        },
-      );
-
-      const data = await response.json();
+      const response = await firstChangePasswordRequest(formData);
 
       // Si se ha cambiado la contraseña correctamente
       if (response.ok) {

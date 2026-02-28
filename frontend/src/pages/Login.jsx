@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { loginRequest } from "../api/auth";
 
 const Login = () => {
   const { login } = useAuth();
@@ -25,32 +26,22 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        },
-      );
+      const response = await loginRequest(formData);
 
-      const data = await response.json();
-
-      // Si se requiere cambiar la contraseña
-      if (data.requirePasswordChange) {
-        navigate("/change-password");
+      if (!response.ok) {
+        // Si se requiere cambiar la contraseña
+        if (response.data.requirePasswordChange) {
+          navigate("/change-password");
+          return;
+        }
+        // Si no se ha logueado correctamente
+        alert(response.data.message || "Error en login");
         return;
       }
 
       // Si se ha logueado correctamente
-      if (data.token) {
-        login(data.token);
-        navigate("/dashboard");
-      } else {
-        alert(data.message || "Error en login");
-      }
+      login(response.data.token);
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
       alert("Error de conexión");
