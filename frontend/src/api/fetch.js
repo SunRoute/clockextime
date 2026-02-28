@@ -5,33 +5,27 @@ export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem("token");
 
   // Configuración de las cabeceras
-  const defaultHeaders = {
+  const headers = {
     "Content-Type": "application/json",
+    ...options.headers,
   };
 
   // Si se ha autenticado
   if (token) {
-    defaultHeaders["Authorization"] = `Bearer ${token}`;
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
-  // Configuración de la petición
-  const config = {
+  // Configuración de la petición y realización
+  const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
-    headers: {
-      ...defaultHeaders,
-      ...options.headers,
-    },
+    headers,
+  });
+
+  const data = await response.json();
+
+  return {
+    ok: response.ok,
+    status: response.status,
+    data,
   };
-
-  // Realizar petición
-  const response = await fetch(`${API_URL}${endpoint}`, config);
-
-  // Si el token ha expirado o es inválido volver a autenticarse
-  if (response.status === 401 || response.status === 403) {
-    localStorage.removeItem("token");
-    window.location.href = "/login";
-    return;
-  }
-
-  return response.json();
 };
