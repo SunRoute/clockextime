@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 // Crear un contexto para manejar el estado de autenticación
 const AuthContext = createContext();
@@ -8,6 +8,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Decodificar token y actualizar el estado cuando cambie
   useEffect(() => {
@@ -19,12 +20,11 @@ export const AuthProvider = ({ children }) => {
           role: decoded.role,
         });
       } catch (error) {
-        console.error("Token inválido");
         logout();
       }
-    } else {
-      setUser(null);
     }
+    // Marcar el estado de carga como false cuando se cierre la sesión
+    setLoading(false);
   }, [token]);
 
   // Almacenar el token en localStorage cuando se inicie sesión
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   return (
     // Devolver el contexto y el componente hijo
     <AuthContext.Provider
-      value={{ token, user, login, logout, isAuthenticated }}
+      value={{ token, user, login, logout, isAuthenticated, loading }}
     >
       {children}
     </AuthContext.Provider>
