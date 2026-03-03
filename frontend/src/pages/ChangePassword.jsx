@@ -32,7 +32,7 @@ const ChangePassword = () => {
         alert("Contraseña cambiada. Inicie sesión nuevamente.");
         navigate("/login");
       } else {
-        alert(data.message);
+        alert(response.data.message);
       }
     } catch (error) {
       console.error(error);
