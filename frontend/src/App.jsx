@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import RoleRoute from "./routes/RoleRoute";
+import MainLayout from "./layout/MainLayout";
+import Dashboard from "./pages/Dashboard";
+import AdminPanel from "./pages/AdminPanel";
 
 import Login from "./pages/Login";
 import ChangePassword from "./pages/ChangePassword";
@@ -13,26 +16,25 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/change-password" element={<ChangePassword />} />
 
-        {/* Rutas protegidas */}
+        {/* Rutas protegidas con un componente principal */}
         <Route
-          path="/admin"
           element={
             <PrivateRoute>
+              <MainLayout />
+            </PrivateRoute>
+          }
+        >
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route
+            path="/admin"
+            element={
               <RoleRoute allowedRole="admin">
-                <h1>Panel Admin</h1>
-                {/* <AdminPanel /> */}
+                <AdminPanel />
               </RoleRoute>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <h1>Dashboard (placeholder)</h1>
-            </PrivateRoute>
-          }
-        />
+            }
+          />
+        </Route>
 
         {/* Fallback */}
         <Route path="*" element={<Login />} />

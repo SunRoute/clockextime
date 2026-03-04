@@ -1,0 +1,77 @@
+/******** MOBILE FIRST ********/
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 4rem 1fr;
+  grid-template-areas:
+    "header"
+    "content";
+  height: 100vh;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 0.9rem;
+}
+
+/* HEADER */
+.layout_header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: black;
+  color: white;
+}
+
+/* SIDEBAR (oculto en móvil) */
+.layout_sidebar {
+  display: none;
+}
+
+.layout_sidebar.active {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 4rem;
+  left: 0;
+  width: 16rem;
+  height: calc(100vh - 4rem);
+  background-color: lightgray;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+/* CONTENT */
+.layout_content {
+  grid-area: content;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: white;
+}
+/******** DESKTOP ********/
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 16rem 1fr;
+    grid-template-rows: 4rem 1fr;
+    grid-template-areas:
+      "header header"
+      "sidebar content";
+    font-size: 1rem;
+  }
+
+  .hamburger {
+    display: none;
+  }
+
+  .layout_sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    grid-area: sidebar;
+    padding: 2rem 1rem;
+    background-color: lightgray;
+  }
+
+  .layout_content {
+    padding: 2rem;
+  }
+}
