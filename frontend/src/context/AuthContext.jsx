@@ -15,6 +15,15 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
+
+        const now = Date.now() / 1000;
+
+        // Verificar si el token ha expirado. Si es así, cerrar sesión
+        if (decoded.exp < now) {
+          logout();
+          return;
+        }
+
         setUser({
           id: decoded.id,
           role: decoded.role,
