@@ -1,4 +1,9 @@
 /******** MOBILE FIRST ********/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .layout {
   display: grid;
   grid-template-columns: 1fr;
@@ -37,7 +42,7 @@
   height: calc(100vh - 4rem);
   background-color: lightgray;
   padding: 1rem;
-  z-index: 1000;
+  /* z-index: 1000; */
 }
 
 .layout_sidebar nav,
