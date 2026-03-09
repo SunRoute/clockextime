@@ -1,12 +1,19 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import PrivateRoute from "./routes/PrivateRoute";
 import RoleRoute from "./routes/RoleRoute";
-import MainLayout from "./layout/MainLayout";
-import Dashboard from "./pages/employee/Dashboard";
-import AdminPanel from "./pages/admin/AdminPanel";
 
+import MainLayout from "./layout/MainLayout";
+
+// Páginas públicas
 import Login from "./pages/auth/Login";
 import ChangePassword from "./pages/auth/ChangePassword";
+
+// Páginas comunes
+import Dashboard from "./pages/employee/Dashboard";
+
+// Páginas de administrador
+import AdminPanel from "./pages/admin/AdminPanel";
 
 function App() {
   return (
@@ -17,27 +24,19 @@ function App() {
         <Route path="/change-password" element={<ChangePassword />} />
 
         {/* Rutas protegidas con un componente principal */}
-        <Route
-          element={
-            <PrivateRoute>
-              <MainLayout />
-            </PrivateRoute>
-          }
-        >
-          <Route path="/dashboard" element={<Dashboard />} />
-
-          <Route
-            path="/admin"
-            element={
-              <RoleRoute allowedRole="admin">
-                <AdminPanel />
-              </RoleRoute>
-            }
-          />
+        <Route element={<PrivateRoute />}>
+          <Route element={<MainLayout />}>
+            {/* Rutas comunes */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* Rutas de administrador */}
+            <Route element={<RoleRoute allowedRole="admin" />}>
+              <Route path="/admin" element={<AdminPanel />} />
+            </Route>
+          </Route>
         </Route>
 
         {/* Fallback */}
-        <Route path="*" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,8 +1,8 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 // Verificar si el usuario tiene el rol requerido
-const RoleRoute = ({ children, allowedRole }) => {
+const RoleRoute = ({ allowedRole }) => {
   const { user, loading } = useAuth();
 
   // Si se está cargando la información del usuario
@@ -14,7 +14,7 @@ const RoleRoute = ({ children, allowedRole }) => {
     return <Navigate to="/dashboard" />;
   }
 
-  return children;
+  return <Outlet />;
 };
 
 export default RoleRoute;
