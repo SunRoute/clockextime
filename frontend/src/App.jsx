@@ -2,11 +2,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import RoleRoute from "./routes/RoleRoute";
 import MainLayout from "./layout/MainLayout";
-import Dashboard from "./pages/Dashboard";
-import AdminPanel from "./pages/AdminPanel";
+import Dashboard from "./pages/employee/Dashboard";
+import AdminPanel from "./pages/admin/AdminPanel";
 
-import Login from "./pages/Login";
-import ChangePassword from "./pages/ChangePassword";
+import Login from "./pages/auth/Login";
+import ChangePassword from "./pages/auth/ChangePassword";
 
 function App() {
   return (

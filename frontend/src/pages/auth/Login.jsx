@@ -1,15 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { firstChangePasswordRequest } from "../api/auth";
+import { useAuth } from "../../context/AuthContext";
+import { loginRequest } from "../../api/auth";
 
-const ChangePassword = () => {
+const Login = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   // Obtener datos del formulario
   const [formData, setFormData] = useState({
     email: "",
-    currentPassword: "",
-    newPassword: "",
+    password: "",
   });
 
   // Actualizar datos del formulario
@@ -25,15 +26,22 @@ const ChangePassword = () => {
     e.preventDefault();
 
     try {
-      const response = await firstChangePasswordRequest(formData);
+      const response = await loginRequest(formData);
 
-      // Si se ha cambiado la contraseña correctamente
-      if (response.ok) {
-        alert("Contraseña cambiada. Inicie sesión nuevamente.");
-        navigate("/login");
-      } else {
-        alert(response.data.message);
+      if (!response.ok) {
+        // Si se requiere cambiar la contraseña
+        if (response.data.requirePasswordChange) {
+          navigate("/change-password");
+          return;
+        }
+        // Si no se ha logueado correctamente
+        alert(response.data.message || "Error en login");
+        return;
       }
+
+      // Si se ha logueado correctamente
+      login(response.data.token);
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
       alert("Error de conexión");
@@ -42,36 +50,28 @@ const ChangePassword = () => {
 
   return (
     <div>
-      <h2>Cambiar contraseña</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="email"
-          placeholder="Email"
+          placeholder="Email o número empleado"
           value={formData.email}
           onChange={handleChange}
           required
         />
         <input
           type="password"
-          name="currentPassword"
-          placeholder="Contraseña actual"
-          value={formData.currentPassword}
+          name="password"
+          placeholder="Contraseña"
+          value={formData.password}
           onChange={handleChange}
           required
         />
-        <input
-          type="password"
-          name="newPassword"
-          placeholder="Nueva contraseña"
-          value={formData.newPassword}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Actualizar</button>
+        <button type="submit">Entrar</button>
       </form>
     </div>
   );
 };
 
-export default ChangePassword;
+export default Login;
