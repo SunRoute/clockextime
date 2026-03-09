@@ -40,6 +40,18 @@
   z-index: 1000;
 }
 
+.layout_sidebar nav,
+.submenu {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.layout_sidebar a {
+  color: white;
+  text-decoration: none;
+}
+
 /* CONTENT */
 .layout_content {
   grid-area: content;
