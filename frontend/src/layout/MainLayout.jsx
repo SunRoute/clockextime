@@ -7,6 +7,9 @@ import "./MainLayout.css";
 const MainLayout = () => {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const closeSidebar = () => {
+    setMenuOpen(false);
+  };
   const [adminOpen, setAdminOpen] = useState(false);
   const toggleAdminMenu = () => {
     setAdminOpen(!adminOpen);
@@ -27,11 +30,17 @@ const MainLayout = () => {
 
       <aside className={`layout_sidebar ${menuOpen ? "active" : ""}`}>
         <nav>
-          <NavLink to="/dashboard">Dashboard</NavLink>
+          <NavLink to="/dashboard" onClick={closeSidebar}>
+            Dashboard
+          </NavLink>
 
-          <NavLink to="/my-workday">Mi jornada</NavLink>
+          <NavLink to="/my-workday" onClick={closeSidebar}>
+            Mi jornada
+          </NavLink>
 
-          <NavLink to="/my-overtimes">Mis horas extra</NavLink>
+          <NavLink to="/my-overtimes" onClick={closeSidebar}>
+            Mis horas extra
+          </NavLink>
 
           {user?.role === "admin" && (
             <>
@@ -42,11 +51,17 @@ const MainLayout = () => {
 
               {adminOpen && (
                 <div className="submenu">
-                  <NavLink to="/admin">Panel admin</NavLink>
+                  <NavLink to="/admin" onClick={closeSidebar}>
+                    Panel admin
+                  </NavLink>
 
-                  <NavLink to="/users">Usuarios</NavLink>
+                  <NavLink to="/users" onClick={closeSidebar}>
+                    Usuarios
+                  </NavLink>
 
-                  <NavLink to="/overtime-management">Horas extra</NavLink>
+                  <NavLink to="/overtime-management" onClick={closeSidebar}>
+                    Horas extra
+                  </NavLink>
                 </div>
               )}
             </>
