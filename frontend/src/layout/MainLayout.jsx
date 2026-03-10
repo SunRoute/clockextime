@@ -37,6 +37,7 @@ const MainLayout = () => {
             <>
               <button className="sidebar-section" onClick={toggleAdminMenu}>
                 Administración
+                <span>{adminOpen ? "▲" : "▼"}</span>
               </button>
 
               {adminOpen && (

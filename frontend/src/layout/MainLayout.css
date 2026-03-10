@@ -57,6 +57,23 @@
   text-decoration: none;
 }
 
+.sidebar-section {
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.5rem 0;
+}
+
+.sidebar-section span {
+  margin-left: 0.7rem;
+}
+
+.submenu {
+  margin-top: 0;
+}
+
 /* CONTENT */
 .layout_content {
   grid-area: content;
@@ -64,6 +81,7 @@
   overflow-y: auto;
   background-color: white;
 }
+
 /******** DESKTOP ********/
 @media (min-width: 768px) {
   .layout {
