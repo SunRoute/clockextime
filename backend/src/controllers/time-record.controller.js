@@ -1,8 +1,12 @@
 import pool from "../config/db.js";
+import { getLocalDateTime } from "../utils/date.js";
 
 export const clockIn = async (req, res) => {
   try {
     const userId = req.user.id; // Uso de JWT
+
+    const clockIn = getLocalDateTime();
+    const dateRecorded = clockIn.slice(0, 10);
 
     // Verificar si existe fichaje abierto
     const [openTimeRecord] = await pool.query(
@@ -18,8 +22,8 @@ export const clockIn = async (req, res) => {
 
     // Crear nuevo fichaje
     await pool.query(
-      "INSERT INTO time_records (user_id, date_recorded, clock_in) VALUES (?, CURDATE(), NOW())",
-      [userId],
+      "INSERT INTO time_records (user_id, date_recorded, clock_in) VALUES (?, ?, ?)",
+      [userId, dateRecorded, clockIn],
     );
 
     res.json({ message: "Entrada registrada correctamente." });
@@ -33,20 +37,23 @@ export const clockOut = async (req, res) => {
   try {
     const userId = req.user.id; // Uso de JWT
 
+    const clockOut = getLocalDateTime();
+
     // Buscar fichaje abierto y calcular segundos trabajados en SQL
     const [rows] = await pool.query(
       `
       SELECT
         time_records.id,
         time_records.clock_in,
-        TIMESTAMPDIFF(SECOND, time_records.clock_in, NOW()) AS seconds_worked, users.daily_working_hours
+        TIMESTAMPDIFF(SECOND, time_records.clock_in, ?) AS seconds_worked,
+        users.daily_working_hours
       FROM time_records
       JOIN users ON time_records.user_id = users.id
       WHERE time_records.user_id = ?
         AND time_records.clock_out IS NULL
       LIMIT 1
       `,
-      [userId],
+      [clockOut, userId],
     );
 
     if (rows.length === 0) {
@@ -63,8 +70,8 @@ export const clockOut = async (req, res) => {
 
     // Cerrar fichaje
     await pool.query(
-      "UPDATE time_records SET clock_out = NOW(), worked_hours = ?, possible_overtime = ? WHERE id = ?",
-      [roundedHours, possibleOvertime, timeRecord.id],
+      "UPDATE time_records SET clock_out = ?, worked_hours = ?, possible_overtime = ? WHERE id = ?",
+      [clockOut, roundedHours, possibleOvertime, timeRecord.id],
     );
 
     // Registrar horas extras si las hay
