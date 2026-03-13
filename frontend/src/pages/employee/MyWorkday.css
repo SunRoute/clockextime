@@ -1,0 +1,68 @@
+/* MOBILE FIRST */
+/* BUTTON */
+.clock-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  background: darkblue;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+/* SUMMARY */
+.today-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: lightgray;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* LIST */
+.time-record-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* CARD */
+.time-record-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: white;
+  border: 1px solid lightgray;
+}
+
+/* DATE */
+.record-date {
+  grid-column: 1 / -1;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: gray;
+}
+
+/* TIMES */
+.record-times {
+  display: flex;
+  gap: 0.4rem;
+  font-size: 1rem;
+}
+.record-hours {
+  font-weight: 600;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  .time-record-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
