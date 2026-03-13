@@ -11,6 +11,7 @@ import ChangePassword from "./pages/auth/ChangePassword";
 
 // Páginas comunes
 import Dashboard from "./pages/employee/Dashboard";
+import MyWorkday from "./pages/employee/MyWorkday";
 
 // Páginas de administrador
 import AdminPanel from "./pages/admin/AdminPanel";
@@ -28,6 +29,7 @@ function App() {
           <Route element={<MainLayout />}>
             {/* Rutas comunes */}
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/my-workday" element={<MyWorkday />} />
             {/* Rutas de administrador */}
             <Route element={<RoleRoute allowedRole="admin" />}>
               <Route path="/admin" element={<AdminPanel />} />
