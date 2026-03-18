@@ -1,0 +1,47 @@
+:root {
+  --primary: blue;
+  --border: lightgray;
+  --bg: beige;
+  --white: white;
+  --radius: 0.5rem;
+}
+
+/* layout básico */
+.form-container {
+  padding: 1rem;
+}
+
+/* CARD */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+/* LABEL */
+.label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+/* INPUT */
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+}
+
+/* BUTTON */
+.button {
+  width: 100%;
+  padding: 0.6rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+}
