@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMyTimeRecordsRequest } from "../../api/timeRecords";
+import { getMyTimeRecordsRequest } from "../../api/timeRecordsApi";
 import "./MyWorkday.css";
 
 import ClockButton from "../../components/timeRecords/ClockButton";

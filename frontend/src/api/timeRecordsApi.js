@@ -1,4 +1,4 @@
-import { apiFetch } from "./fetch";
+import { apiFetch } from "./client";
 
 export const clockInRequest = () => {
   return apiFetch("/api/time-record/clock-in", {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { firstChangePasswordRequest } from "../../api/auth";
+import { firstChangePasswordRequest } from "../../api/authApi";
 
 const ChangePassword = () => {
   const navigate = useNavigate();

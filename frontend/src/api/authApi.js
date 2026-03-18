@@ -1,4 +1,4 @@
-import { apiFetch } from "./fetch";
+import { apiFetch } from "./client";
 
 export const loginRequest = (credentials) => {
   return apiFetch("/api/auth/login", {
