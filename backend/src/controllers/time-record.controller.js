@@ -1,11 +1,11 @@
 import pool from "../config/db.js";
-import { getLocalDateTime } from "../utils/date.js";
+import { getUTCTimestamp } from "../utils/date.js";
 
 export const clockIn = async (req, res) => {
   try {
     const userId = req.user.id; // Uso de JWT
 
-    const clockIn = getLocalDateTime();
+    const clockIn = getUTCTimestamp();
     const dateRecorded = clockIn.slice(0, 10);
 
     // Verificar si existe fichaje abierto
@@ -37,15 +37,14 @@ export const clockOut = async (req, res) => {
   try {
     const userId = req.user.id; // Uso de JWT
 
-    const clockOut = getLocalDateTime();
+    const clockOut = getUTCTimestamp();
 
-    // Buscar fichaje abierto y calcular segundos trabajados en SQL
+    // Buscar fichaje abierto
     const [rows] = await pool.query(
       `
       SELECT
         time_records.id,
         time_records.clock_in,
-        TIMESTAMPDIFF(SECOND, time_records.clock_in, ?) AS seconds_worked,
         users.daily_working_hours
       FROM time_records
       JOIN users ON time_records.user_id = users.id
@@ -53,7 +52,7 @@ export const clockOut = async (req, res) => {
         AND time_records.clock_out IS NULL
       LIMIT 1
       `,
-      [clockOut, userId],
+      [userId],
     );
 
     if (rows.length === 0) {
@@ -61,8 +60,14 @@ export const clockOut = async (req, res) => {
     }
 
     const timeRecord = rows[0];
+
+    // Calcular con JavaScript para evitar desfases de zona horaria de MySQL
+    const clockInDate = new Date(timeRecord.clock_in);
+    const clockOutDate = new Date(clockOut);
+    const secondsWorked = Math.round((clockOutDate - clockInDate) / 1000);
+
     // Convertir segundos a horas
-    const hoursWorked = timeRecord.seconds_worked / 3600;
+    const hoursWorked = secondsWorked / 3600;
     const roundedHours = Number(hoursWorked.toFixed(2));
 
     // Comparar con jornada real del usuario

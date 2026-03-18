@@ -1,5 +1,5 @@
-import { formatTime } from "../../utils/date";
-import { formatWorkedTime } from "../../utils/time";
+import { formatTime } from "../../utils/formatTime";
+import { formatWorkedTime } from "../../utils/formatWorkedTime";
 
 const TimeRecordCard = ({ record }) => {
   return (

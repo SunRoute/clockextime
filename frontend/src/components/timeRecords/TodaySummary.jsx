@@ -1,5 +1,5 @@
-import { formatTime } from "../../utils/date";
-import { formatWorkedTime } from "../../utils/time";
+import { formatTime } from "../../utils/formatTime";
+import { formatWorkedTime } from "../../utils/formatWorkedTime";
 
 const TodaySummary = ({ todayRecord, totalWorkedToday }) => {
   // Comprobar si hay fichaje hoy
@@ -17,7 +17,8 @@ const TodaySummary = ({ todayRecord, totalWorkedToday }) => {
       {/* Mostrar el tiempo trabajado en caso de que haya entrada y salida */}
       {todayRecord.clock_out && (
         <p>
-          Total último fichaje: {formatWorkedTime(parseFloat(todayRecord.worked_hours))}
+          Total último fichaje:{" "}
+          {formatWorkedTime(parseFloat(todayRecord.worked_hours))}
         </p>
       )}
 
