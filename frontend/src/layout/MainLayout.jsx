@@ -35,7 +35,7 @@ const MainLayout = () => {
           </NavLink>
 
           <NavLink to="/my-workday" onClick={closeSidebar}>
-            Mi jornada
+            Mis fichajes
           </NavLink>
 
           <NavLink to="/my-overtimes" onClick={closeSidebar}>

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
+import GuestRoute from "./routes/GuestRoute";
 import PrivateRoute from "./routes/PrivateRoute";
 import RoleRoute from "./routes/RoleRoute";
 
@@ -20,10 +21,17 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Ruta de inicio */}
+        <Route
+          path="/login"
+          element={
+            <GuestRoute>
+              <Login />
+            </GuestRoute>
+          }
+        />
         {/* Rutas públicas */}
-        <Route path="/login" element={<Login />} />
         <Route path="/change-password" element={<ChangePassword />} />
-
         {/* Rutas protegidas con un componente principal */}
         <Route element={<PrivateRoute />}>
           <Route element={<MainLayout />}>
