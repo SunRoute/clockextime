@@ -31,7 +31,12 @@ const Login = () => {
       if (!response.ok) {
         // Si se requiere cambiar la contraseña
         if (response.data.requirePasswordChange) {
-          navigate("/change-password");
+          navigate("/change-password", {
+            state: {
+              fromLogin: true,
+              email: formData.email,
+            },
+          });
           return;
         }
         // Si no se ha logueado correctamente

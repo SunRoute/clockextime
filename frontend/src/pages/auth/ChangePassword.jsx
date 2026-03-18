@@ -1,13 +1,22 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { firstChangePasswordRequest } from "../../api/authApi";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Comprobar si se ha iniciado desde el login
+  const fromLogin = location.state?.fromLogin;
+
+  // Proteger acceso directo: solo se permite si viene de Login
+  if (!fromLogin) {
+    return <Navigate to="/login" replace />;
+  }
 
   // Obtener datos del formulario
   const [formData, setFormData] = useState({
-    email: "",
+    email: location.state?.email || "",
     currentPassword: "",
     newPassword: "",
   });
@@ -30,7 +39,7 @@ const ChangePassword = () => {
       // Si se ha cambiado la contraseña correctamente
       if (response.ok) {
         alert("Contraseña cambiada. Inicie sesión nuevamente.");
-        navigate("/login");
+        navigate("/login", { replace: true });
       } else {
         alert(response.data.message);
       }
