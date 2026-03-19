@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { firstChangePasswordRequest } from "../../api/authApi";
+import Card from "../../components/ui/Card";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
@@ -50,35 +53,36 @@ const ChangePassword = () => {
   };
 
   return (
-    <div>
-      <h2>Cambiar contraseña</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="currentPassword"
-          placeholder="Contraseña actual"
-          value={formData.currentPassword}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="newPassword"
-          placeholder="Nueva contraseña"
-          value={formData.newPassword}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Actualizar</button>
-      </form>
+    <div className="form-container">
+      <Card>
+        <form onSubmit={handleSubmit}>
+          <Input
+            type="text"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            type="password"
+            name="currentPassword"
+            placeholder="Contraseña actual"
+            value={formData.currentPassword}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            type="password"
+            name="newPassword"
+            placeholder="Nueva contraseña"
+            value={formData.newPassword}
+            onChange={handleChange}
+            required
+          />
+          <Button type="submit">Actualizar</Button>
+        </form>
+      </Card>
     </div>
   );
 };

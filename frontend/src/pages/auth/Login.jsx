@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { loginRequest } from "../../api/authApi";
+import Card from "../../components/ui/Card";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
 
 const Login = () => {
   const { login } = useAuth();
@@ -54,27 +57,28 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="email"
-          placeholder="Email o número empleado"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Entrar</button>
-      </form>
+    <div className="form-container">
+      <Card>
+        <form onSubmit={handleSubmit}>
+          <Input
+            type="email"
+            name="email"
+            placeholder="email@ejemplo.com"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <Button type="submit">Entrar</Button>
+        </form>
+      </Card>
     </div>
   );
 };
