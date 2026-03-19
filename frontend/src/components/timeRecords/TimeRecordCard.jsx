@@ -1,5 +1,6 @@
 import { formatTime } from "../../utils/formatTime";
 import { formatWorkedTime } from "../../utils/formatWorkedTime";
+import "../../styles/timeRecords.css";
 
 const TimeRecordCard = ({ record }) => {
   return (

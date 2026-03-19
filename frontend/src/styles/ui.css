@@ -6,8 +6,19 @@
   --radius: 0.5rem;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* MOBILE FIRST */
 /* layout básico */
 .form-container {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 40vh;
   padding: 1rem;
 }
 
@@ -44,4 +55,11 @@
   background: var(--primary);
   color: white;
   cursor: pointer;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  .form-container {
+    height: 80vh;
+  }
 }

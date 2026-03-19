@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { clockInRequest, clockOutRequest } from "../../api/timeRecordsApi";
+import "../../styles/timeRecords.css";
 
 const ClockButton = ({ hasOpenRecord, refreshRecords }) => {
   // Crear un estado para manejar el estado de carga

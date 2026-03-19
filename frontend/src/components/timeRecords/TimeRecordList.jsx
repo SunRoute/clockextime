@@ -1,3 +1,5 @@
+import "../../styles/timeRecords.css";
+
 import TimeRecordCard from "./TimeRecordCard";
 
 const TimeRecordList = ({ records }) => {

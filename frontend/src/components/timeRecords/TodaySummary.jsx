@@ -1,5 +1,6 @@
 import { formatTime } from "../../utils/formatTime";
 import { formatWorkedTime } from "../../utils/formatWorkedTime";
+import "../../styles/timeRecords.css";
 
 const TodaySummary = ({ todayRecord, totalWorkedToday }) => {
   // Comprobar si hay fichaje hoy
