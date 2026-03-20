@@ -50,17 +50,58 @@ export const createUser = async (req, res) => {
   }
 };
 
-// Desactivar usuario (solo para admin)
-export const deactivateUser = async (req, res) => {
+// desactivar/activar usuario (solo para admin)
+export const toggleUserActive = async (req, res) => {
   try {
     const userId = req.params.id;
+    const loggedUserId = req.user.id;
 
-    await pool.query("UPDATE users SET active = FALSE WHERE id = ?", [userId]);
+    const [rows] = await pool.query(
+      "SELECT active, role_id FROM users WHERE id = ?",
+      [userId],
+    );
 
-    res.json({ message: "Usuario desactivado correctamente." });
+    // Comprobar si existe el usuario
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const user = rows[0];
+
+    // Si se intenta desactivar a sí mismo (usuario logueado)
+    if (
+      parseInt(userId, 10) === parseInt(loggedUserId, 10) &&
+      user.role_id === 1 &&
+      user.active
+    ) {
+      return res.status(400).json({
+        message: "No puedes desactivarte a ti mismo siendo administrador",
+      });
+    }
+
+    // Si se intenta desactivar al último admin
+    if (user.role_id === 1 && user.active) {
+      const [admins] = await pool.query(
+        "SELECT COUNT(*) as total FROM users WHERE role_id = 1 AND active = TRUE",
+      );
+
+      if (admins[0].total <= 1) {
+        return res.status(400).json({
+          message: "No puedes desactivar el último administrador",
+        });
+      }
+    }
+
+    const newStatus = !rows[0].active;
+
+    await pool.query("UPDATE users SET active = ? WHERE id = ?", [
+      newStatus,
+      userId,
+    ]);
+
+    res.json({ message: "Estado actualizado", active: newStatus });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error al desactivar usuario." });
+    res.status(500).json({ message: "Error al actualizar usuario" });
   }
 };
 
