@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* MOBILE FIRST */
+.overtime-container {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.overtime-list {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* CARD */
+.overtime-summary {
+  display: grid;
+  gap: 1rem;
+}
+
+.overtime-card {
+  display: grid;
+  align-content: space-between;
+  gap: 1rem;
+}
+
+.overtime-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+/* TEXT */
+.overtime-date {
+  font-weight: 500;
+}
+
+.overtime-status {
+  font-weight: bold;
+}
+
+/* REASON */
+.overtime-reason {
+  margin-bottom: 0.5rem;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  .overtime-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

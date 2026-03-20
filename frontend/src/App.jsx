@@ -13,6 +13,7 @@ import ChangePassword from "./pages/auth/ChangePassword";
 // Páginas comunes
 import Dashboard from "./pages/employee/Dashboard";
 import MyWorkday from "./pages/employee/MyWorkday";
+import MyOvertimes from "./pages/employee/MyOvertimes";
 
 // Páginas de administrador
 import AdminPanel from "./pages/admin/AdminPanel";
@@ -38,6 +39,7 @@ function App() {
             {/* Rutas comunes */}
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/my-workday" element={<MyWorkday />} />
+            <Route path="/my-overtimes" element={<MyOvertimes />} />
             {/* Rutas de administrador */}
             <Route element={<RoleRoute allowedRole="admin" />}>
               <Route path="/admin" element={<AdminPanel />} />
