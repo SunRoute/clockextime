@@ -13,6 +13,8 @@ export const getAllUsers = async (req, res) => {
         email,
         role_id,
         active,
+        daily_working_hours,
+        weekly_working_hours,
         created_at
       FROM users
       ORDER BY created_at DESC
