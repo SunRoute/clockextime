@@ -13,6 +13,8 @@ export const getAllUsers = async (req, res) => {
         email,
         role_id,
         active,
+        daily_working_hours,
+        weekly_working_hours,
         created_at
       FROM users
       ORDER BY created_at DESC
@@ -50,17 +52,118 @@ export const createUser = async (req, res) => {
   }
 };
 
-// Desactivar usuario (solo para admin)
-export const deactivateUser = async (req, res) => {
+// Actualizar usuario (solo para admin)
+export const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const {
+      employee_number,
+      employee_name,
+      email,
+      role_id,
+      daily_working_hours,
+      weekly_working_hours,
+    } = req.body;
+
+    await pool.query(
+      `
+      UPDATE users 
+      SET employee_number = ?, employee_name = ?, email = ?, role_id = ?, daily_working_hours = ?, weekly_working_hours = ?
+      WHERE id = ?
+      `,
+      [
+        employee_number,
+        employee_name,
+        email,
+        role_id,
+        daily_working_hours,
+        weekly_working_hours,
+        userId,
+      ],
+    );
+
+    res.json({ message: "Usuario actualizado correctamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al actualizar usuario" });
+  }
+};
+
+// desactivar/activar usuario (solo para admin)
+export const toggleUserActive = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const loggedUserId = req.user.id;
+
+    const [rows] = await pool.query(
+      "SELECT active, role_id FROM users WHERE id = ?",
+      [userId],
+    );
+
+    // Comprobar si existe el usuario
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const user = rows[0];
+
+    // Si se intenta desactivar a sí mismo (usuario logueado)
+    if (
+      parseInt(userId, 10) === parseInt(loggedUserId, 10) &&
+      user.role_id === 1 &&
+      user.active
+    ) {
+      return res.status(400).json({
+        message: "No puedes desactivarte a ti mismo siendo administrador",
+      });
+    }
+
+    // Si se intenta desactivar al último admin
+    if (user.role_id === 1 && user.active) {
+      const [admins] = await pool.query(
+        "SELECT COUNT(*) as total FROM users WHERE role_id = 1 AND active = TRUE",
+      );
+
+      if (admins[0].total <= 1) {
+        return res.status(400).json({
+          message: "No puedes desactivar el último administrador",
+        });
+      }
+    }
+
+    const newStatus = !rows[0].active;
+
+    await pool.query("UPDATE users SET active = ? WHERE id = ?", [
+      newStatus,
+      userId,
+    ]);
+
+    res.json({ message: "Estado actualizado", active: newStatus });
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar usuario" });
+  }
+};
+
+// Resetear contraseña (solo para admin)
+export const resetPassword = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    await pool.query("UPDATE users SET active = FALSE WHERE id = ?", [userId]);
+    const defaultPassword = "reset1234";
+    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
-    res.json({ message: "Usuario desactivado correctamente." });
+    await pool.query(
+      `
+      UPDATE users 
+      SET password = ?, password_changed = FALSE 
+      WHERE id = ?
+      `,
+      [hashedPassword, userId],
+    );
+
+    res.json({ message: "Contraseña reseteada a reset1234" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error al desactivar usuario." });
+    res.status(500).json({ message: "Error al resetear contraseña" });
   }
 };
 
