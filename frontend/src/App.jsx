@@ -17,6 +17,7 @@ import MyOvertimes from "./pages/employee/MyOvertimes";
 
 // Páginas de administrador
 import AdminPanel from "./pages/admin/AdminPanel";
+import Users from "./pages/admin/Users";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             {/* Rutas de administrador */}
             <Route element={<RoleRoute allowedRole="admin" />}>
               <Route path="/admin" element={<AdminPanel />} />
+              <Route path="/users" element={<Users />} />
             </Route>
           </Route>
         </Route>
