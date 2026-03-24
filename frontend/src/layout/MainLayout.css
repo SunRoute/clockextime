@@ -26,6 +26,9 @@
   background-color: black;
   color: white;
 }
+.btn-logout {
+  padding: 0.2rem;
+}
 
 /* SIDEBAR (oculto en móvil) */
 .layout_sidebar {
@@ -95,6 +98,11 @@
 
   .hamburger {
     display: none;
+  }
+
+  .btn-logout {
+    font-size: 1rem;
+    padding: 0.2rem;
   }
 
   .layout_sidebar {

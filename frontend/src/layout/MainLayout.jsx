@@ -24,7 +24,9 @@ const MainLayout = () => {
         <h1>Clockextime</h1>
         <div>
           <span>{user?.role}</span>
-          <button onClick={logout}>Cerrar sesión</button>
+          <button className="btn-logout" onClick={logout}>
+            Logout
+          </button>
         </div>
       </header>
 
