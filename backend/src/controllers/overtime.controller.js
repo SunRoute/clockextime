@@ -7,6 +7,7 @@ export const getPendingOvertimes = async (req, res) => {
       `
       SELECT 
         overtimes.id,
+        users.employee_number,
         users.employee_name,
         overtimes.overtime_hours,
         overtimes.reason,
@@ -30,7 +31,12 @@ export const getPendingOvertimes = async (req, res) => {
 export const updateOvertimeStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body; // 'aprobada' o 'rechazada'
+    const { status } = req.body;
+
+    // Validar que el estado sea 'aprobada' o 'rechazada'
+    if (!status || !["aprobada", "rechazada"].includes(status)) {
+      return res.status(400).json({ message: "Estado inválido." });
+    }
 
     await pool.query("UPDATE overtimes SET overtime_status = ? WHERE id = ?", [
       status,

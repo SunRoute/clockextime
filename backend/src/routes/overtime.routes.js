@@ -16,6 +16,6 @@ router.put("/:id/reason", verifyToken, addOvertimeReason);
 
 // Admin
 router.get("/pending", verifyToken, verifyAdmin, getPendingOvertimes);
-router.put("/:id", verifyToken, verifyAdmin, updateOvertimeStatus);
+router.put("/:id/status", verifyToken, verifyAdmin, updateOvertimeStatus);
 
 export default router;
