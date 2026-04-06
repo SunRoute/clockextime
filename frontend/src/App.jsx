@@ -18,6 +18,7 @@ import MyOvertimes from "./pages/employee/MyOvertimes";
 // Páginas de administrador
 import AdminPanel from "./pages/admin/AdminPanel";
 import Users from "./pages/admin/Users";
+import OvertimeReviews from "./pages/admin/OvertimeReviews";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
             <Route element={<RoleRoute allowedRole="admin" />}>
               <Route path="/admin" element={<AdminPanel />} />
               <Route path="/users" element={<Users />} />
+              <Route path="/overtime-reviews" element={<OvertimeReviews />} />
             </Route>
           </Route>
         </Route>

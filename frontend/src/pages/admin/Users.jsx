@@ -37,14 +37,14 @@ const UsersPage = () => {
     fetchUsers();
   }, []);
 
-  // FILTRO
+  // Filtrar usuarios
   const filteredUsers = users.filter(
-    (u) =>
-      u.employee_name.toLowerCase().includes(search.toLowerCase()) ||
-      u.employee_number.includes(search),
+    (user) =>
+      user.employee_name.toLowerCase().includes(search.toLowerCase()) ||
+      user.employee_number.includes(search),
   );
 
-  // CREAR
+  // Crear usuario
   const handleCreate = async (e) => {
     e.preventDefault();
     const res = await createUserRequest(form);
@@ -54,7 +54,7 @@ const UsersPage = () => {
     }
   };
 
-  // TOGGLE ACTIVE
+  // Activar o desactivar usuario
   const handleToggle = async (user) => {
     if (user.role_id === 1 && user.active) {
       alert("No se puede desactivar al administrador");
@@ -71,7 +71,7 @@ const UsersPage = () => {
     fetchUsers();
   };
 
-  // ACTUALIZAR USUARIO
+  // Actualizar usuario
   const handleUpdate = async (updatedUser) => {
     const res = await updateUserRequest(selectedUser.id, updatedUser);
     if (res.ok) {
@@ -81,7 +81,7 @@ const UsersPage = () => {
     }
   };
 
-  // RESET PASSWORD
+  // Resetear contraseña
   const handleResetPassword = async () => {
     const confirm = window.confirm(
       "¿Seguro que quieres resetear la contraseña de este usuario?",

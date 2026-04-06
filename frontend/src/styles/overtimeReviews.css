@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* MOBILE FIRST */
+.overtime-review-container {
+  display: grid;
+  gap: 1rem;
+}
+
+.overtime-review-list {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+/* CARD */
+.overtime-review-summary {
+  display: grid;
+  gap: 1rem;
+}
+
+.overtime-review-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.overtime-review-employee {
+  font-weight: bold;
+}
+
+.card-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  .overtime-review-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

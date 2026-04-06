@@ -61,7 +61,7 @@ const MainLayout = () => {
                     Usuarios
                   </NavLink>
 
-                  <NavLink to="/overtime-management" onClick={closeSidebar}>
+                  <NavLink to="/overtime-reviews" onClick={closeSidebar}>
                     Horas extra
                   </NavLink>
                 </div>
