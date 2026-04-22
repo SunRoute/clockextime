@@ -13,6 +13,12 @@ export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email?.trim() || !password?.trim()) {
+      return res
+        .status(400)
+        .json({ message: "Email y contraseña son obligatorios" });
+    }
+
     // Buscar usuario
     const [rows] = await pool.query(
       "SELECT users.*, roles.role_name FROM users JOIN roles ON users.role_id = roles.id WHERE email = ? AND active = TRUE",
@@ -61,6 +67,12 @@ export const login = async (req, res) => {
 export const firstChangePassword = async (req, res) => {
   try {
     const { email, currentPassword, newPassword } = req.body;
+
+    if (!email?.trim() || !currentPassword?.trim() || !newPassword?.trim()) {
+      return res.status(400).json({
+        message: "Email, contraseña actual y nueva contraseña son obligatorios",
+      });
+    }
 
     const [rows] = await pool.query(
       "SELECT * FROM users WHERE email = ? AND active = TRUE",

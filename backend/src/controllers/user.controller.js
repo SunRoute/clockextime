@@ -34,6 +34,17 @@ export const createUser = async (req, res) => {
     const { employee_number, employee_name, email, password, role_id } =
       req.body;
 
+    if (
+      !employee_number?.trim() ||
+      !employee_name?.trim() ||
+      !email?.trim() ||
+      !password?.trim()
+    ) {
+      return res.status(400).json({
+        message: "Nº empleado, nombre, email y contraseña son obligatorios.",
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await pool.query(
@@ -172,6 +183,12 @@ export const changePassword = async (req, res) => {
   try {
     const userId = req.user.id;
     const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword?.trim() || !newPassword?.trim()) {
+      return res.status(400).json({
+        message: "La contraseña actual y la nueva contraseña son obligatorias",
+      });
+    }
 
     // Buscar usuario
     const [rows] = await pool.query("SELECT password FROM users WHERE id = ?", [

@@ -47,10 +47,32 @@ const UsersPage = () => {
   // Crear usuario
   const handleCreate = async (e) => {
     e.preventDefault();
+
+    if (
+      !form.employee_number.trim() ||
+      !form.employee_name.trim() ||
+      !form.email.trim() ||
+      !form.password.trim()
+    ) {
+      alert("Nº empleado, nombre, email y contraseña son obligatorios");
+      return;
+    }
+
     const res = await createUserRequest(form);
     if (res.ok) {
       alert("Usuario creado");
+      setForm({
+        employee_number: "",
+        employee_name: "",
+        email: "",
+        password: "",
+        role_id: 2,
+        daily_working_hours: "",
+        weekly_working_hours: "",
+      });
       fetchUsers();
+    } else {
+      alert(res.data.message || "Error al crear usuario");
     }
   };
 
@@ -142,6 +164,8 @@ const UsersPage = () => {
           <Input
             placeholder="Nº empleado"
             name="employee_number"
+            value={form.employee_number}
+            required
             onChange={(e) =>
               setForm({ ...form, employee_number: e.target.value })
             }
@@ -149,6 +173,8 @@ const UsersPage = () => {
           <Input
             placeholder="Nombre"
             name="employee_name"
+            value={form.employee_name}
+            required
             onChange={(e) =>
               setForm({ ...form, employee_name: e.target.value })
             }
@@ -156,12 +182,17 @@ const UsersPage = () => {
           <Input
             placeholder="Email"
             name="email"
+            type="email"
+            value={form.email}
+            required
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
           <Input
             placeholder="Contraseña"
             name="password"
             type="password"
+            value={form.password}
+            required
             onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
 
@@ -175,12 +206,14 @@ const UsersPage = () => {
 
           <Input
             placeholder="Horas diarias"
+            value={form.daily_working_hours}
             onChange={(e) =>
               setForm({ ...form, daily_working_hours: e.target.value })
             }
           />
           <Input
             placeholder="Horas semanales"
+            value={form.weekly_working_hours}
             onChange={(e) =>
               setForm({ ...form, weekly_working_hours: e.target.value })
             }
