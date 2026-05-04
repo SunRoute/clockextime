@@ -3,7 +3,7 @@ import "../../styles/overtimes.css";
 
 const OvertimeSummary = ({ total, pending }) => {
   return (
-    <Card>
+    <Card style={{ backgroundColor: 'lightgray' }}>
       <div className="overtime-summary">
         <h2>Resumen</h2>
         {/* Mostrar el total de horas pendientes este mes */}

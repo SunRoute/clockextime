@@ -3,7 +3,7 @@ import "../../styles/overtimeReviews.css";
 
 const OvertimeReviewSummary = ({ totalPending, totalHours }) => {
   return (
-    <Card>
+    <Card style={{ backgroundColor: 'lightgray' }}>
       <div className="overtime-review-summary">
         <h2>Resumen</h2>
         {/* Mostrar el total de peticiones pendientes */}

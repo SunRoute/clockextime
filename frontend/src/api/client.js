@@ -1,4 +1,16 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
+const buildUrl = (endpoint) => {
+  const normalizedEndpoint = endpoint.startsWith("/")
+    ? endpoint
+    : `/${endpoint}`;
+
+  if (API_URL.endsWith("/api") && normalizedEndpoint.startsWith("/api/")) {
+    return `${API_URL}${normalizedEndpoint.slice(4)}`;
+  }
+
+  return `${API_URL}${normalizedEndpoint}`;
+};
 
 // Función para realizar peticiones GET y POST
 export const apiFetch = async (endpoint, options = {}) => {
@@ -16,12 +28,15 @@ export const apiFetch = async (endpoint, options = {}) => {
   }
 
   // Configuración de la petición y realización
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const response = await fetch(buildUrl(endpoint), {
     ...options,
     headers,
   });
 
-  const data = await response.json();
+  const contentType = response.headers.get("content-type") || "";
+  const data = contentType.includes("application/json")
+    ? await response.json()
+    : await response.text();
 
   return {
     ok: response.ok,

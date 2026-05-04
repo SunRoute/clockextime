@@ -1,7 +1,7 @@
 import "../../styles/ui.css";
 
-const Card = ({ children }) => {
-  return <div className="card">{children}</div>;
+const Card = ({ children, style, className }) => {
+  return <div className={`card ${className || ''}`} style={style}>{children}</div>;
 };
 
 export default Card;

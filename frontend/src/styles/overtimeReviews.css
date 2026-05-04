@@ -8,6 +8,7 @@
 .overtime-review-container {
   display: grid;
   gap: 1rem;
+  padding: 1rem;
 }
 
 .overtime-review-list {

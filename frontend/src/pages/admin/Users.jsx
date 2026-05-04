@@ -140,7 +140,7 @@ const UsersPage = () => {
       {tab === "gestion" && (
         <>
           <Input
-            placeholder="Buscar por email o nº empleado"
+            placeholder="Buscar por nombre o nº empleado"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
